@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect, useMemo } from 'react';
 
-import { Table, TableHeader, TableColumn, Link, TableBody, TableRow, TableCell, User, Avatar, CardFooter, Button, Spinner, Pagination } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, Link, TableBody, TableRow, TableCell, User, Avatar, Image, CardFooter, Button, Spinner, Pagination } from "@nextui-org/react";
 import { readContracts } from '@wagmi/core'
 import { nftAbi } from './abi';
 
@@ -34,7 +34,7 @@ export const Activity = () => {
             case "time":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
-                        <p className="text-bold text-sm capitalize">{(new Date(data.time )).toDateString()}</p>
+                        <p className="text-bold text-sm capitalize">{(new Date(data.time)).toDateString()}</p>
                     </div>
                 );
 
@@ -64,8 +64,8 @@ export const Activity = () => {
                 ],
             })
             const pet = res[0].result;
-            
-            nftList.push({ pet: pet, id: nft.id, time: nft.dataTime , method:nft.method })
+
+            nftList.push({ pet: pet, id: nft.id, time: nft.dataTime, method: nft.method })
         }
         const sortData = nftList.sort((a: any, b: any) => b.point - a.point)
         const addDataIndex = await sortData.map((obj: any, index: any) => ({
@@ -83,45 +83,57 @@ export const Activity = () => {
 
     return (
         <>
-            <div className='pb-3'>
-                <Table isStriped
-                    topContentPlacement="outside"
-                    bottomContent={
-                        pages > 0 ? (
-                            <div className="flex w-full justify-center">
-                                <Pagination
-                                    isCompact
-                                    showControls
-                                    showShadow
-                                    color="primary"
-                                    page={page}
-                                    total={pages}
-                                    onChange={(page) => setPage(page)}
-                                />
-                            </div>
-                        ) : null}
-                    selectionMode="single" aria-label="Example static collection table h-44" classNames={{
-                        base: "max-h-[620px] pt-3",
-                        table: "min-h-[620px] pt-3",
-                    }}>
-                    <TableHeader>
-                        <TableColumn key="pet" >Pet</TableColumn>
-                        <TableColumn key="action" >Action</TableColumn>
-                        <TableColumn key="time">Time</TableColumn>
-                    </TableHeader>
-                    <TableBody
-                        items={petList || []}
-                        isLoading={loadingState}
-                        loadingContent={<Spinner label="Loading..." />}
-                    >
-                        {(item: any) => (
-                            <TableRow key={item?.id}>
-                                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
+            {!loadingState ? (
+                <div className='pb-3'>
+                    <Table isStriped
+                        topContentPlacement="outside"
+                        bottomContent={
+                            pages > 0 ? (
+                                <div className="flex w-full justify-center">
+                                    <Pagination
+                                        isCompact
+                                        showControls
+                                        showShadow
+                                        color="primary"
+                                        page={page}
+                                        total={pages}
+                                        onChange={(page) => setPage(page)}
+                                    />
+                                </div>
+                            ) : null}
+                        selectionMode="single" aria-label="Example static collection table h-44" classNames={{
+                            base: "max-h-[620px] pt-3",
+                            table: "min-h-[620px] pt-3",
+                        }}>
+                        <TableHeader>
+                            <TableColumn key="pet" >Pet</TableColumn>
+                            <TableColumn key="action" >Action</TableColumn>
+                            <TableColumn key="time">Time</TableColumn>
+                        </TableHeader>
+                        <TableBody
+                            items={petList || []}
+                            isLoading={loadingState}
+                            loadingContent={<Spinner label="Loading..." />}
+                        >
+                            {(item: any) => (
+                                <TableRow key={item?.id}>
+                                    {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
+                    <div className="flex justify-center place-content-center ">
+                        <Image
+                            className="mt-48 object-center"
+                            src={`/pot/ui/Loading_Bar.gif`}
+                        />
+                    </div>
+                </div>
+            )}
+
         </>
     )
 }
