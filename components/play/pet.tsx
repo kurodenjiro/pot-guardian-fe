@@ -544,7 +544,7 @@ export const Pet = () => {
                                 {itemData && itemData.map((item: any) => (
                                     <Tab key={item.id} title={
                                         <Image
-                                            width={40}
+                                            width={25}
                                             radius={"none"}
                                             src={`/pot/item/${item.name.replaceAll(" ", "_")}.svg`}
                                         />}>
