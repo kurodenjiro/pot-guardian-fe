@@ -41,7 +41,7 @@ const nextConfig = {
     FAUCET_ADDRESS: '0x5950cF7303605acBC5B274E8cA658542832Cb9a3',
     DAO_ADDRESS: '0x410EaA07644593d428568eA1B6b435e6f6Ad3C4D',
     EXPLORER_URL: 'https://calibration.filscan.io',
-    HOST: 'http://localhost:3000',
+    HOST: 'https://pot-guardian-fe.vercel.app',
     MONGODB_USER:"kurodenjiro",
     MONGODB_PASSWORD:"potguardian"
   },
