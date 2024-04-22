@@ -293,7 +293,6 @@ export const Pet = () => {
         onSuccess(data: any) {
             console.log(data)
 
-
             getNftList()
         }
     })
@@ -318,6 +317,7 @@ export const Pet = () => {
                         })
                     })
                 }
+                getNftList()
             }
             checkLogs();
 
@@ -576,7 +576,7 @@ export const Pet = () => {
             />
             </div>
         </div>
-    ) || isPet == false && (
+    ) || isPet == false && loadPet==false && (
         <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
 
             <div className="flex justify-center ">
