@@ -31,7 +31,7 @@ const MAX_ALLOWANCE = BigInt('20000000000000000000000')
 
 export const Pet = () => {
     const [petData, setPetData] = React.useState<any>(null)
-    const [isPet, setIsPet] = React.useState<any>(true)
+    const [isPet, setIsPet] = React.useState<any>(false)
     const [itemData, setItemData] = React.useState<any>(null)
     const [selectedPet, setSelectedPet] = React.useState<any>(null)
     const [ownPet, setOwnPet] = React.useState<any>(null)
@@ -174,6 +174,7 @@ export const Pet = () => {
         if (nftList[0]) {
             loadSelectedPet(nftList[0].value)
         }
+        console.log("nftList",nftList)
         setPetData(nftList)
         if (nftList.length > 0) {
             setIsPet(true)
@@ -350,7 +351,7 @@ export const Pet = () => {
             setIsApprove(true);
         }
     })
-    const loadData = async() => {
+    const loadData = async () => {
         await setLoadPet(true)
         await getNftList()
         await setLoadPet(false)
@@ -479,38 +480,67 @@ export const Pet = () => {
                     </div>
 
                     <div className="col-start-1 col-end-7 ">
-                        <Slider  {...settings}>
-                            {petData && petData.map((pet: any) => (
-                                <div className="col-start-1 col-end-7 " key={pet.id}>
-                                    <div className="flex justify-center ">
-                                        <Image
-                                            className=" object-center"
-                                            src={`/pot/pet/Plant-${pet.attr && pet.attr[1]}-${pet.evol && pet.evol[1]}.svg`}
-                                        />
-                                    </div>
+                        {petData.length > 1 ? (
+                      <Slider  {...settings}>
+                      {/* bug 1 pot will be error show */}
+                      {petData && petData.map((pet: any, index: any) => (
+                          <div className="col-start-1 col-end-7 " key={index}>
+                              <div className="flex justify-center ">
+                                  <Image
+                                      className=" object-center"
+                                      src={`/pot/pet/Plant-${pet.attr && pet.attr[1]}-${pet.evol && pet.evol[1]}.svg`}
+                                  />
+                              </div>
 
-                                    <div className="flex justify-center pt-4">
+                              <div className="flex justify-center pt-4">
 
-                                        <p className="font-semibold  leading-none text-default-600 text-center">{pet && pet.label} #{pet && pet.value}</p>
+                                  <p className="font-semibold  leading-none text-default-600 text-center">{pet && pet.label} #{pet && pet.value}</p>
 
-                                    </div>
-                                    <div className="flex justify-center">
-                                        {ownPetEvol && ownPetEvol[1] == 0 && ownPet[3] > 1 && ownPet[1] !== 4 && (
-                                            <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
-                                                Evol Now !
-                                            </Button>
-                                        )}
-                                        {ownPetEvol && ownPetEvol[1] == 1 && ownPet[3] > 2 && ownPet[1] !== 4 && (
-                                            <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
-                                                Evol Now !
-                                            </Button>
-                                        )}
-                                    </div>
-                                </div>
+                              </div>
+                              <div className="flex justify-center">
+                                  {ownPetEvol && ownPetEvol[1] == 0 && ownPet[3] > 1 && ownPet[1] !== 4 && (
+                                      <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
+                                          Evol Now !
+                                      </Button>
+                                  )}
+                                  {ownPetEvol && ownPetEvol[1] == 1 && ownPet[3] > 2 && ownPet[1] !== 4 && (
+                                      <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
+                                          Evol Now !
+                                      </Button>
+                                  )}
+                              </div>
+                          </div>
+                      ))}
+                  </Slider>
+                        ) : (
+                            <div className="col-start-1 col-end-7 " key={0}>
+                            <div className="flex justify-center ">
+                                <Image
+                                    className=" object-center"
+                                    src={`/pot/pet/Plant-${petData[0].attr && petData[0].attr[1]}-${petData[0].evol && petData[0].evol[1]}.svg`}
+                                />
+                            </div>
 
-                            ))}
+                            <div className="flex justify-center pt-4">
 
-                        </Slider>
+                                <p className="font-semibold  leading-none text-default-600 text-center">{petData[0] && petData[0].label} #{petData[0] && petData[0].value}</p>
+
+                            </div>
+                            <div className="flex justify-center">
+                                {ownPetEvol && ownPetEvol[1] == 0 && ownPet[3] > 1 && ownPet[1] !== 4 && (
+                                    <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
+                                        Evol Now !
+                                    </Button>
+                                )}
+                                {ownPetEvol && ownPetEvol[1] == 1 && ownPet[3] > 2 && ownPet[1] !== 4 && (
+                                    <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
+                                        Evol Now !
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                        )}
+  
                     </div>
 
                     <div className="col-start-1 col-end-8 ">
@@ -570,13 +600,13 @@ export const Pet = () => {
     ) || loadPet && (
         <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
             <div className="flex justify-center place-content-center ">
-            <Image
-                className="mt-48 object-center"
-                src={`/pot/ui/Loading_Bar.gif`}
-            />
+                <Image
+                    className="mt-48 object-center"
+                    src={`/pot/ui/Loading_Bar.gif`}
+                />
             </div>
         </div>
-    ) || isPet == false && loadPet==false && (
+    ) || isPet == false && loadPet == false && (
         <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
 
             <div className="flex justify-center ">
