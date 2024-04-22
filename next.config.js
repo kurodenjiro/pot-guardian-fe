@@ -38,7 +38,7 @@ const nextConfig = {
     URL_FAUCET: "https://faucet.calibnet.chainsafe-fil.io/funds.html",
     NFT_ADDRESS: '0x9b57e2E0717E39a107c2F80B9165c49B2089835C',
     TOKEN_ADDRESS: '0x1fb0D724A433832f9f05929139A9D1af065F0B8B',
-    FAUCET_ADDRESS: '0x5950cF7303605acBC5B274E8cA658542832Cb9a3',
+    FAUCET_ADDRESS: '0xd350B81931f65f95E76BF7D944236d50021e68DD',
     DAO_ADDRESS: '0x410EaA07644593d428568eA1B6b435e6f6Ad3C4D',
     EXPLORER_URL: 'https://calibration.filscan.io',
     HOST: 'https://pot-guardian-fe.vercel.app',
