@@ -17,6 +17,8 @@ export const Account = () => {
     const MAX_ALLOWANCE = BigInt('20000000000000000000000')
     const { address } = useAccount();
     const [isApprove, setIsApprove] = React.useState(false)
+    const [isBlance, setIsBlance] = React.useState(false)
+    const [isEthBlance, setEthBlance] = React.useState(false)
     const { data: allowance, refetch } = useContractRead({
         address: `0x${process.env.TOKEN_ADDRESS?.slice(2)}`,
         abi: tokenAbi,
@@ -155,18 +157,50 @@ export const Account = () => {
     const onFaucet = () => {
         setFaucetAsync?.();
     };
+    const fetchMyAPI = async () => {
+        if (allowance) {
+            console.log("allowance", allowance)
+            if (allowance >= 10000) {
+                setIsApprove(true)
+            }
+        }
+        if (Number(tokenBlanceData?.formatted) > 0) {
+            setIsBlance(true)
+        }
+        if (Number(ethBlanceData?.formatted) > 0.001) {
+            setEthBlance(true)
+        }
+    }
+    const { isLoading: isLoadingFaucet } = useWaitForTransaction({
+        hash: faucetResult?.hash,
+        onSuccess(data) {
+            setIsBlance(true)
+            fetchMyAPI();
+        }
+    })
+
     return (
         <div className="flex w-full flex-col">
             <Tabs aria-label="Options" fullWidth defaultSelectedKey="account">
                 <Tab key="faucet" title="Faucet">
-                    <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
+                {(!isApprove) ? (
+                        <div className="pb-5" style={{ paddingTop: "130%" }} >
+                            <button type="button" onClick={approveAsync} className="nes-btn bg-white w-full" >
+                                Approval
+                            </button>
+                        </div>
+                    ) : (
+                        
+                        <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">
                         <div className="pb-5" >
                             <button type="button" onClick={onFaucet} className="nes-btn bg-white w-full" >
                                 Faucet $POT
                             </button>
                         </div>
                     </div>
-
+                        
+                    )
+                }
                 </Tab>
                 <Tab key="mint" title="MINT">
                     <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 ">

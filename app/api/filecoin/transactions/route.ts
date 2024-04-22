@@ -12,14 +12,26 @@ export async function POST(request: any) {
     let client = new MongoClient(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@pot-guardian.taelj9r.mongodb.net/?retryWrites=true&w=majority&appName=pot-guardian`)
     let clientPromsie = await client.connect();
     let db = clientPromsie.db()
+    
     let col = await db.collection("transactions")
-    await col.insertOne(data)
-    return NextResponse.json({ status: "success" }, {
-      status: 200,
-      headers: {
-        'content-type': 'application/json',
-      },
-    });
+    const result = await col.findOne({ id: data.id });
+    if (result) {
+      return NextResponse.json({ status: "field is exist" }, {
+        status: 400,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    } else {
+      await col.insertOne(data)
+      return NextResponse.json({ status: "success" }, {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
+      });
+    }
+
   } catch (error) {
     return NextResponse.json(
       { error },
